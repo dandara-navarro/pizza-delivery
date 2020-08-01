@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const bodyParser = require('body-parser')
 
 const app = express();
 
@@ -21,6 +22,9 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
 //EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({extended : false}));
+app.use(express.static('public'));
 
 //BodyParser
 app.use(express.urlencoded({ extended: false }));

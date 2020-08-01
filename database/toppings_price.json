@@ -1,0 +1,30 @@
+[
+  {
+    "topping": "bacon",
+    "price": "1.50"
+  },
+  {
+    "topping": "peppers",
+    "price": "0.50"
+  },
+  {
+    "topping": "onions",
+    "price": "0.20"
+  },
+  {
+    "topping": "Extra cheese",
+    "price": "1.00"
+  },
+  {
+    "topping": "Sausage",
+    "price": "0.60"
+  },
+  {
+    "topping": "Mushrooms",
+    "price": "1.70"
+  },
+  {
+    "topping": "Black Olives",
+    "price": "0.30"
+  }
+]
