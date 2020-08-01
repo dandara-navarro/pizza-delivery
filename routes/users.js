@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const _ = require('lodash');
+let database = require('../database/pizzadb');
+let crusties = _.uniq(_.map(database, 'crusty'));
 
 //User model
 const User = require ('../models/User');
@@ -11,6 +14,9 @@ router.get('/login', (req, res) => res.render('login'));
 
 // Register Page
 router.get('/register', (req, res) => res.render('register'));
+
+// Index Page
+router.get('/index', (req, res) => res.render('index', {crusties: crusties, pizzas: database}));
 
 // Register Handle
 router.post('/register', (req, res) => {
@@ -82,7 +88,7 @@ router.post('/register', (req, res) => {
 //Login Handle
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/dashboard',
+        successRedirect: '/users/index',
         failureRedirect: '/users/login',
         failureFlash: true
     })(req, res, next);
