@@ -3,11 +3,13 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const _ = require('lodash');
+const {validationResult} = require('express-validator');
+const Order = require('../models/Order');
 let database = require('../database/pizzadb');
 let crusties = _.uniq(_.map(database, 'crusty'));
-const {validationResult} = require('express-validator');
 let newOrder = {customer: {}, order: {}};
 let PriceCalculator = require('../modules/PriceCalculator');
+
 
 //User model
 const User = require ('../models/User');
@@ -113,30 +115,24 @@ router.post('/order', (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     }
-    newOrder.customer.name = req.user.name
-    newOrder.customer.phone = req.user.phone
-    newOrder.customer.address = req.user.address
-    newOrder.order.crusty = req.body.crusty
-    newOrder.order.favorite_topping = req.body.favorite_topping
-    newOrder.order.size = req.body.size
-    newOrder.order.quantity = req.body.quantity
+
     let calculator = new PriceCalculator(req.body)
     let price = calculator.getFinalPrice()
-    newOrder.order.price = price
-    res.render('order', {'request': req, 'price': price})
-});
+    const {crusty, favorite_topping, size, quantity} = req.body;
+    const {name, email, address, phone} = req.user;
+    
+    const order = new Order({
+        email,
+        crusty,
+        favorite_topping,
+        size,
+        quantity,
+        price
+    });
 
-router.post('/success', (req, res) => {
-    // let data = JSON.stringify(newOrder, null, 2);
-    // let dir = 'orders';
-    // if (!fs.existsSync(dir)) {
-    //     fs.mkdirSync(dir);
-    // }
-    // fs.writeFileSync(`orders/order-${Date.now()}.json`, data)
-    // let time = 0;
-
-    res.send('opa');
-    //res.render('success', {'request': req, 'timeToDelivery': '30 min'})
+    order.save();
+    
+    res.render('order', {'request': req, 'price': price, 'timeToDelivery': '30 min'})
 });
 
 module.exports = router;

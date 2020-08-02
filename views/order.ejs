@@ -20,6 +20,11 @@
 
 <form id="orderDetails">
     <fieldset class="border p-2">
+        <legend class="w-auto">Thank you! Your Pizza is on the way!</legend>
+        <!-- <h4>Estimated wait time: <%=timeToDelivery%></h4> -->
+    </fieldset>
+
+    <fieldset class="border p-2">
         <legend class="w-auto">Order Details</legend>
         <h5>Crusty: </h5><p><%= request.body.crusty %></p>
         <h5>Toppings: </h5><p><%= request.body.favorite_topping %></p>
@@ -37,8 +42,7 @@
     <br>
     <div class="form-group">
         <div class="text-center">
-            <button  class="btn btn-danger" id="cancelOrder" type="submit" formmethod="get" formaction="/cancel">Cancel</button>
-            <button  class="btn btn-success" id="finishOrder" type="submit" formmethod="post" formaction="/users/success" >Finish Order</button>
+            <button  class="btn btn-success" id="finishOrder" type="submit" formmethod="get" formaction="/users/index" >New Order</button>
         </div>
     </div>
 </form>
